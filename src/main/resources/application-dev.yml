@@ -1,0 +1,11 @@
+logging:
+  level:
+    br:
+      com:
+        williammacedo: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
