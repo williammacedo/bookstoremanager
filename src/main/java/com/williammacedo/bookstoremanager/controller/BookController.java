@@ -20,6 +20,6 @@ public class BookController {
     })
     @GetMapping
     public ResponseEntity<String> hello() {
-        return ResponseEntity.ok( "Hello World BookstoreManager and I'm running an example with PR, new PR.");
+        return ResponseEntity.ok( "Hello World BookstoreManager.");
     }
 }
