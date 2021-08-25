@@ -10,7 +10,8 @@ addons:
       secure: "**************************" # encrypted value of your token
 
 script:
-  - mvn clean package sonar:sonar -P sonar
+  - - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -P sonar -Dsonar.projectKey=williammacedo_bookstoremanager
+#  - mvn clean package sonar:sonar -P sonar
 cache:
   directories:
     - $HOME/.m2
