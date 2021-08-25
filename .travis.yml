@@ -5,13 +5,11 @@ jdk: openjdk11
 install: true
 addons:
   sonarcloud:
-    organization: "williammacedo"
-    token:
-      secure: "**************************" # encrypted value of your token
+    organization: $SONAR_ORGANIZATION
+      token: $SONAR_TOKEN
 
 script:
-  - - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -P sonar -Dsonar.projectKey=williammacedo_bookstoremanager
-#  - mvn clean package sonar:sonar -P sonar
+  - mvn clean package sonar:sonar -P sonar
 cache:
   directories:
     - $HOME/.m2
