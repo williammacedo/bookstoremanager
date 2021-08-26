@@ -3,3 +3,17 @@ logging:
     br:
       com:
         williammacedo: INFO
+spring:
+  datasource:
+    url: jdbc:h2:mem:bookstoremanager
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+    properties:
+      hibernate.format_sql: false
+  h2:
+    console:
+      enabled: true
