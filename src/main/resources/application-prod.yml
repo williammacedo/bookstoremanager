@@ -14,6 +14,8 @@ spring:
     show-sql: false
     properties:
       hibernate.format_sql: false
+    hibernate:
+      ddl-auto: update
   h2:
     console:
       enabled: true
