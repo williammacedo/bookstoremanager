@@ -11,7 +11,7 @@ management:
         include: "health,info,metrics"
 spring:
   datasource:
-    url: jdbc:h2:file:C:\Users\willi\desenv\workspace_estudo\H2_DATABASE\bookstoremanager
+    url: jdbc:h2:file:C:\Users\willi\desenv\workspace_estudo\H2_DATABASE\bookstoremanager;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -20,6 +20,10 @@ spring:
     show-sql: true
     properties:
       hibernate.format_sql: true
+    hibernate:
+      ddl-auto: update
   h2:
     console:
       enabled: true
+      settings:
+        web-allow-others: true
