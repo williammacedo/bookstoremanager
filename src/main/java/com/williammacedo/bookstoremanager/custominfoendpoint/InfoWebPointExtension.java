@@ -15,18 +15,15 @@ import java.util.Map;
 @EndpointWebExtension(endpoint = InfoEndpoint.class)
 public class InfoWebPointExtension {
 
+    public static final int STATUS_INFO = 200;
     private InfoEndpoint delegate;
 
     @ReadOperation
-    public WebEndpointResponse<Map> info() {
+    public WebEndpointResponse<Map<String, Object>> info() {
         Map<String, Object> info = this.delegate.info();
-        Integer status = getStatus(info);
         Map<String, Object> customInfo = new HashMap<>(info);
         customInfo.put("customInfo", "handsOn");
-        return new WebEndpointResponse<>(customInfo, status);
+        return new WebEndpointResponse<>(customInfo, STATUS_INFO);
     }
 
-    private Integer getStatus(Map<String, Object> info) {
-        return 200;
-    }
 }
