@@ -11,11 +11,11 @@ import lombok.Value;
 public class AuthorDTOBuilder {
 
     @Builder.Default
-    private Long id =1L;
+    Long id =10L;
     @Builder.Default
-    private String name = "Rodrigo Peleias";
+    String name = "Joao Victor";
     @Builder.Default
-    private int age = 32;
+    int age = 17;
 
     public AuthorDTO buildAuthorDTO() {
         return new AuthorDTO(id,name,age);
