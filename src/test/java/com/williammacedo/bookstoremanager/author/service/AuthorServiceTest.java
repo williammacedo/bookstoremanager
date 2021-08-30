@@ -4,15 +4,17 @@ import com.williammacedo.bookstoremanager.author.builder.AuthorDTOBuilder;
 import com.williammacedo.bookstoremanager.author.mapper.AuthorMapper;
 import com.williammacedo.bookstoremanager.author.repository.AuthorRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AuthorServiceTest {
 
-    private final AuthorMapper mapper = AuthorMapper.INSTANCE;
+    @Autowired
+    private AuthorMapper mapper;
 
     @Mock
     private AuthorRepository repository;

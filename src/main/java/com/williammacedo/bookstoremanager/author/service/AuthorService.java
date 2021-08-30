@@ -4,6 +4,7 @@ import com.williammacedo.bookstoremanager.author.dto.AuthorDTO;
 import com.williammacedo.bookstoremanager.author.mapper.AuthorMapper;
 import com.williammacedo.bookstoremanager.author.repository.AuthorRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +14,12 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorService {
 
-    private final static AuthorMapper authorMapper = AuthorMapper.INSTANCE;
+    private AuthorMapper authorMapper;
 
     private AuthorRepository repository;
 
     public List<AuthorDTO> findAll() {
-        return repository.findAll().stream()
+        return repository.findAll(Sort.by("name")).stream()
             .map(authorMapper::toDTO).collect(Collectors.toList());
     }
 }
