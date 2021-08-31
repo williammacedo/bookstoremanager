@@ -12,14 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class AuthorService {
 
-    private final AuthorMapper mapper = AuthorMapper.INSTANCE;
+    private static final AuthorMapper mapper = AuthorMapper.INSTANCE;
 
     private AuthorRepository repository;
 

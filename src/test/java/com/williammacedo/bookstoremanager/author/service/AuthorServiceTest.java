@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthorServiceTest {
+class AuthorServiceTest {
 
     private final AuthorMapper mapper = AuthorMapper.INSTANCE;
 
@@ -95,8 +95,8 @@ public class AuthorServiceTest {
                 .thenReturn(Collections.singletonList(expectedAuthorDTOReturned));
 
         List<AuthorDTO> authorsReturned = service.findAll();
-        Assertions.assertEquals(authorsReturned.size(), 1);
-        Assertions.assertEquals(authorsReturned.get(0), expectedAuthorDTOReturned);
+        Assertions.assertEquals(1, authorsReturned.size());
+        Assertions.assertEquals(expectedAuthorDTOReturned, authorsReturned.get(0));
     }
 
     @Test
@@ -128,7 +128,8 @@ public class AuthorServiceTest {
     @Test
     void whenDeleteIsCalledWithInvalidIdThenThrowAuthorNotFoundException() {
         Author authorToDelete = mapper.toModel(authorDTOBuilder.buildAuthorDTO());
+        Long idToDelete = authorToDelete.getId();
         Mockito.when(repository.findById(authorToDelete.getId())).thenReturn(Optional.empty());
-        Assertions.assertThrows(AuthorNotFoundException.class, () -> service.delete(authorToDelete.getId()));
+        Assertions.assertThrows(AuthorNotFoundException.class, () -> service.delete(idToDelete));
     }
 }

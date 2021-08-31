@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthorControllerUnitTest {
+class AuthorControllerUnitTest {
 
     private  static final String AUTHOR_API_URL_PATH = "/v1/authors";
 
