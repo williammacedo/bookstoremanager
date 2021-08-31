@@ -2,12 +2,9 @@ package com.williammacedo.bookstoremanager.author.controller;
 
 import com.williammacedo.bookstoremanager.author.builder.AuthorDTOBuilder;
 import com.williammacedo.bookstoremanager.author.dto.AuthorDTO;
-import com.williammacedo.bookstoremanager.author.entity.Author;
 import com.williammacedo.bookstoremanager.author.service.AuthorService;
 import com.williammacedo.bookstoremanager.author.utils.JsonConversionUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
