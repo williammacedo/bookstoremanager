@@ -4,7 +4,7 @@ import com.williammacedo.bookstoremanager.author.builder.AuthorDTOBuilder;
 import com.williammacedo.bookstoremanager.author.dto.AuthorDTO;
 import com.williammacedo.bookstoremanager.author.entity.Author;
 import com.williammacedo.bookstoremanager.author.repository.AuthorRepository;
-import com.williammacedo.bookstoremanager.author.utils.JsonConversionUtils;
+import com.williammacedo.bookstoremanager.utils.JsonConversionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
