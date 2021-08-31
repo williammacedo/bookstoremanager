@@ -51,7 +51,6 @@ public class PublisherServiceTest {
     @Test
     @DisplayName("Unit test - EmptyList publishers should returned")
     void whenListPublisherIsCalledThenAnEmptyListShouldBeReturned() {
-        PublisherDTO expectedPublisherDTOReturned = dtoBuilder.buildPublisherDTO();
         Mockito.when(repository.findAllAsDTO()).thenReturn(Collections.EMPTY_LIST);
 
         List<PublisherDTO> publisherReturned = service.findAll();
