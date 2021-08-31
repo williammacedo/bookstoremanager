@@ -121,6 +121,7 @@
                     src/main/java/**/BookstoremanagerApplication.java,
                     src/main/java/**/config/**,
                     src/main/java/**/exception/**,
+                    src/main/java/**/custominfoendpoint/**,
                     src/main/java/**/dto/**,
                     src/main/java/**/entity/**,
                     src/main/java/**/repository/**,
