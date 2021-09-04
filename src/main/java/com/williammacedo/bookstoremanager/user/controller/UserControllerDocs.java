@@ -23,4 +23,18 @@ public interface UserControllerDocs {
             @ApiResponse(code = 404, message = "User not found.")
     })
     UserDTO findById(Long id);
+
+    @ApiOperation(value = "User creation operation")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Success user creation"),
+            @ApiResponse(code = 400, message = "Missing required fields, wrong field range value or user already registered on system.")
+    })
+    UserDTO create(UserDTO dto);
+
+    @ApiOperation(value = "User exclusion operation.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "No content, author deleted."),
+            @ApiResponse(code = 404, message = "User not found.")
+    })
+    void delete(Long id);
 }
