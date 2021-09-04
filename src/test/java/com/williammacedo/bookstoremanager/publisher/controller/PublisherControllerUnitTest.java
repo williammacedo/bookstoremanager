@@ -1,12 +1,8 @@
 package com.williammacedo.bookstoremanager.publisher.controller;
 
-import com.williammacedo.bookstoremanager.author.builder.AuthorDTOBuilder;
-import com.williammacedo.bookstoremanager.author.dto.AuthorDTO;
 import com.williammacedo.bookstoremanager.publisher.builder.PublisherDTOBuilder;
 import com.williammacedo.bookstoremanager.publisher.dto.PublisherDTO;
 import com.williammacedo.bookstoremanager.publisher.service.PublisherService;
-import com.williammacedo.bookstoremanager.utils.JsonConversionUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class PublisherControllerUnitTest {
+class PublisherControllerUnitTest {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
