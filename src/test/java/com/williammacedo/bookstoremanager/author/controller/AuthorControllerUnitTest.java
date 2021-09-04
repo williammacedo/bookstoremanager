@@ -85,7 +85,7 @@ class AuthorControllerUnitTest {
     }
 
     @Test
-    void whenPOSTIsCalledWithoutRequiredFieldThenBadRequestShouldBeInformed() throws Exception {
+    void whenPOSTIsCalledWithoutRequiredFieldsThenBadRequestShouldBeInformed() throws Exception {
         AuthorDTO expectedCreatedAuthorDTO = authorDTOBuilder.buildAuthorDTO();
         expectedCreatedAuthorDTO.setName(null);
 

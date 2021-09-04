@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,12 +28,13 @@ public class PublisherController implements PublisherControllerDocs {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PublisherDTO create(PublisherDTO dto) {
+    public PublisherDTO create(@RequestBody @Valid PublisherDTO dto) {
         return service.create(dto);
     }
 
-    @DeleteMapping
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }
