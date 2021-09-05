@@ -22,5 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             ") from User user")
     List<UserDTO> findAllAsDTO();
 
-    Optional<User> findByNameIgnoreCase(String name);
+    Optional<User> findByUsernameOrEmail(String username, String email);
 }

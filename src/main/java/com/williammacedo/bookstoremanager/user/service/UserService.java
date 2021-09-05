@@ -31,7 +31,7 @@ public class UserService {
 
     @Transactional
     public UserDTO create(UserDTO dto) {
-        verifyIfExists(dto.getName());
+        verifyIfExists(dto.getUsername(), dto.getEmail());
         User user = repository.save(mapper.toModel(dto));
         return mapper.toDTO(user);
     }
@@ -46,8 +46,8 @@ public class UserService {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    private void verifyIfExists(String name) {
-        repository.findByNameIgnoreCase(name)
-                .ifPresent(user -> {throw new UserAlreadyExistsException(user.getName());});
+    private void verifyIfExists(String username, String email) {
+        repository.findByUsernameOrEmail(username, email)
+                .ifPresent(user -> {throw new UserAlreadyExistsException(username, email);});
     }
 }
