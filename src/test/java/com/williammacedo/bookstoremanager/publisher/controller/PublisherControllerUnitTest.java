@@ -1,5 +1,6 @@
 package com.williammacedo.bookstoremanager.publisher.controller;
 
+import com.williammacedo.bookstoremanager.exception.BookstoreExceptionHandler;
 import com.williammacedo.bookstoremanager.publisher.builder.PublisherDTOBuilder;
 import com.williammacedo.bookstoremanager.publisher.dto.PublisherDTO;
 import com.williammacedo.bookstoremanager.publisher.service.PublisherService;
@@ -53,6 +54,7 @@ class PublisherControllerUnitTest {
         dtoBuilder = PublisherDTOBuilder.builder().build();
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+                .setControllerAdvice(BookstoreExceptionHandler.class)
                 .setViewResolvers((s, locale) -> new MappingJackson2JsonView())
                 .build();
     }
