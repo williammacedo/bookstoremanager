@@ -96,7 +96,9 @@ class AuthorControllerUnitTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JsonConversionUtils.asJsonString(expectedCreatedAuthorDTO))
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[0]", is("Field: NAME must not be blank")))
+                .andExpect(jsonPath("$.message", is("Informed argument(s) validation error(s)")));
     }
 
     @Test
