@@ -3,6 +3,7 @@ package com.williammacedo.bookstoremanager.user.controller;
 import com.williammacedo.bookstoremanager.exception.BookstoreExceptionHandler;
 import com.williammacedo.bookstoremanager.user.builder.UserDTOBuilder;
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
+import com.williammacedo.bookstoremanager.user.exception.UserNotFoundException;
 import com.williammacedo.bookstoremanager.user.service.UserService;
 import com.williammacedo.bookstoremanager.utils.JsonConversionUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,6 +107,22 @@ public class UserControllerUnitTest {
     }
 
     @Test
+    @DisplayName("Controller UT - Find by With Invalid ID")
+    void whenGETIsCalledWithInvalidIDThenShouldReturnNotFound() throws Exception {
+        UserDTO expectedUser = dtoBuilder.buildUserDTO();
+
+        Mockito.when(service.findById(expectedUser.getId())).thenThrow(new UserNotFoundException(expectedUser.getId()));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(USERS_API_URL_PATH + "/" + expectedUser.getId()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
+                .andExpect(jsonPath("$.errors[0]", is("User with id 100 not exists!")))
+                .andExpect(jsonPath("$.message", is("User with id 100 not exists!")));
+
+        Mockito.verify(service, Mockito.times(1)).findById(expectedUser.getId());
+    }
+
+    @Test
     @DisplayName("Controller UT - Post to create user")
     void whenPOSTIsCalledThenShouldReturnUserCreated() throws Exception {
         UserDTO expectedUser = dtoBuilder.buildUserDTO();
@@ -160,6 +177,22 @@ public class UserControllerUnitTest {
 
         mockMvc.perform(MockMvcRequestBuilders.delete(USERS_API_URL_PATH + "/" + expectedUser.getId()))
                 .andExpect(status().isNoContent());
+
+        Mockito.verify(service, Mockito.times(1)).delete(expectedUser.getId());
+    }
+
+    @Test
+    @DisplayName("Controller UT - Delete by With Invalid ID")
+    void whenDELETEIsCalledWithInvalidIDThenShouldReturnNotFound() throws Exception {
+        UserDTO expectedUser = dtoBuilder.buildUserDTO();
+
+        Mockito.doThrow(new UserNotFoundException(expectedUser.getId())).when(service).delete(expectedUser.getId());
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(USERS_API_URL_PATH + "/" + expectedUser.getId()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
+                .andExpect(jsonPath("$.errors[0]", is("User with id 100 not exists!")))
+                .andExpect(jsonPath("$.message", is("User with id 100 not exists!")));
 
         Mockito.verify(service, Mockito.times(1)).delete(expectedUser.getId());
     }
