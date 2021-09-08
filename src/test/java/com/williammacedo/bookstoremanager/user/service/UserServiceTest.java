@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
 
     static final UserMapper mapper = UserMapper.INSTANCE;
 
@@ -81,12 +81,12 @@ public class UserServiceTest {
     @Test
     @DisplayName("Unit test - Get User By InvalidID -> NotFound")
     void whenGETUserWithInvalidIDIsCalledThenNotFoundShouldBeInformed() {
-        UserDTO expectedUserDTO = dtoBuilder.buildUserDTO();
-        Mockito.when(repository.findById(expectedUserDTO.getId())).thenReturn(Optional.empty());
+        final Long invalidID = 100L;
+        Mockito.when(repository.findById(invalidID)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () ->service.findById(expectedUserDTO.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () ->service.findById(invalidID));
 
-        Mockito.verify(repository, Mockito.times(1)).findById(expectedUserDTO.getId());
+        Mockito.verify(repository, Mockito.times(1)).findById(invalidID);
     }
 
     @Test
@@ -107,12 +107,12 @@ public class UserServiceTest {
     @Test
     @DisplayName("Unit test - Delete User By InvalidID -> NotFound")
     void whenDELETEUserWithInvalidIDIsCalledThenNotFoundShouldBeInformed() {
-        UserDTO expectedUserDTO = dtoBuilder.buildUserDTO();
-        Mockito.when(repository.findById(expectedUserDTO.getId())).thenReturn(Optional.empty());
+        final Long invalidID = 100L;
+        Mockito.when(repository.findById(invalidID)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(UserNotFoundException.class, () ->service.delete(expectedUserDTO.getId()));
+        Assertions.assertThrows(UserNotFoundException.class, () ->service.delete(invalidID));
 
-        Mockito.verify(repository, Mockito.times(1)).findById(expectedUserDTO.getId());
+        Mockito.verify(repository, Mockito.times(1)).findById(invalidID);
     }
 
     @Test
