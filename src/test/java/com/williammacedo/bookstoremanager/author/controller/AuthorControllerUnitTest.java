@@ -3,6 +3,7 @@ package com.williammacedo.bookstoremanager.author.controller;
 import com.williammacedo.bookstoremanager.author.builder.AuthorDTOBuilder;
 import com.williammacedo.bookstoremanager.author.dto.AuthorDTO;
 import com.williammacedo.bookstoremanager.author.service.AuthorService;
+import com.williammacedo.bookstoremanager.exception.BookstoreExceptionHandler;
 import com.williammacedo.bookstoremanager.utils.JsonConversionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,7 @@ class AuthorControllerUnitTest {
     void setUp() {
         authorDTOBuilder = AuthorDTOBuilder.builder().build();
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(BookstoreExceptionHandler.class)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setViewResolvers((s, locale) -> new MappingJackson2JsonView())
                 .build();
@@ -94,7 +96,9 @@ class AuthorControllerUnitTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JsonConversionUtils.asJsonString(expectedCreatedAuthorDTO))
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[0]", is("Field: NAME must not be blank")))
+                .andExpect(jsonPath("$.message", is("Informed argument(s) validation error(s)")));
     }
 
     @Test

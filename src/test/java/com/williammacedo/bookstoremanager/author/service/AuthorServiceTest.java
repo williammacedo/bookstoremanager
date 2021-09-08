@@ -8,7 +8,7 @@ import com.williammacedo.bookstoremanager.author.exception.AuthorNotFoundExcepti
 import com.williammacedo.bookstoremanager.author.mapper.AuthorMapper;
 import com.williammacedo.bookstoremanager.author.repository.AuthorRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,10 +32,10 @@ class AuthorServiceTest {
     @InjectMocks
     private AuthorService service;
 
-    private AuthorDTOBuilder authorDTOBuilder;
+    private static AuthorDTOBuilder authorDTOBuilder;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         authorDTOBuilder = AuthorDTOBuilder.builder().build();
     }
 
