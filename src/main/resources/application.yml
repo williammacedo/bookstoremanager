@@ -2,10 +2,6 @@ spring:
   profiles:
     active: dev
 
-server:
-  servlet:
-    context-path: /api
-
 info:
   app:
     name: '@project.name@'
