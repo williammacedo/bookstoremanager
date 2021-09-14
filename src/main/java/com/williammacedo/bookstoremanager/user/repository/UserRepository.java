@@ -4,6 +4,7 @@ import com.williammacedo.bookstoremanager.user.dto.UserDTO;
 import com.williammacedo.bookstoremanager.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +24,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserDTO> findAllAsDTO();
 
     Optional<User> findByUsernameOrEmail(String username, String email);
+
+    @Query(
+        "select user " +
+        "from User user " +
+        "where user.id <> :id and " +
+        "(user.username = :username or user.email = :email)"
+    )
+    Optional<User> findByUsernameOrEmailAndIdNot(@Param("id") Long id, @Param("username") String username, @Param("email") String email);
 }

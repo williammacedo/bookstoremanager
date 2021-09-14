@@ -141,11 +141,69 @@ class UserServiceTest {
         UserDTO expectedUserDTO = dtoBuilder.buildUserDTO();
         User user = mapper.toModel(expectedUserDTO);
         Mockito.when(repository.findByUsernameOrEmail(expectedUserDTO.getUsername(), expectedUserDTO.getEmail()))
+                .thenReturn(Optional.empty());
+        Mockito.when(repository.findByUsernameOrEmail(expectedUserDTO.getUsername(), expectedUserDTO.getEmail()))
                 .thenReturn(Optional.of(user));
 
         Assertions.assertThrows(UserAlreadyExistsException.class, () ->service.create(expectedUserDTO));
 
         Mockito.verify(repository, Mockito.times(1))
                 .findByUsernameOrEmail(expectedUserDTO.getUsername(), expectedUserDTO.getEmail());
+    }
+
+    @Test
+    @DisplayName("Unit test - Put return dto")
+    void whenPUTUserIsCalledThenDtoShouldBeReturned() {
+        UserDTO expectedUserDTO = dtoBuilder.buildUserDTO();
+        User user = mapper.toModel(expectedUserDTO);
+
+        Mockito.when(repository.findByUsernameOrEmailAndIdNot(expectedUserDTO.getId(), expectedUserDTO.getUsername(), expectedUserDTO.getEmail()))
+                .thenReturn(Optional.empty());
+        Mockito.when(repository.findById(expectedUserDTO.getId())).thenReturn(Optional.of(user));
+        Mockito.when(repository.save(user))
+                .thenReturn(user);
+
+        UserDTO userDTOReturned = service.update(expectedUserDTO.getId(), expectedUserDTO);
+        Assertions.assertNotNull(userDTOReturned);
+        Assertions.assertEquals(expectedUserDTO, userDTOReturned);
+
+        Mockito.verify(repository, Mockito.times(1))
+                .findByUsernameOrEmailAndIdNot(expectedUserDTO.getId(), expectedUserDTO.getUsername(), expectedUserDTO.getEmail());
+        Mockito.verify(repository, Mockito.times(1))
+                .findById(expectedUserDTO.getId());
+        Mockito.verify(repository, Mockito.times(1))
+                .save(user);
+    }
+
+    @Test
+    @DisplayName("Unit test - Put Invalid ID -> 404")
+    void whenPUTUserIsCalledWithInvalidIDThenDtoShouldBeReturnedNotFound() {
+        UserDTO expectedUserDTO = dtoBuilder.buildUserDTO();
+
+        Mockito.when(repository.findByUsernameOrEmailAndIdNot(expectedUserDTO.getId(), expectedUserDTO.getUsername(), expectedUserDTO.getEmail()))
+                .thenReturn(Optional.empty());
+        Mockito.when(repository.findById(expectedUserDTO.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UserNotFoundException.class, () ->service.update(expectedUserDTO.getId(), expectedUserDTO));
+
+        Mockito.verify(repository, Mockito.times(1))
+                .findByUsernameOrEmailAndIdNot(expectedUserDTO.getId(), expectedUserDTO.getUsername(), expectedUserDTO.getEmail());
+        Mockito.verify(repository, Mockito.times(1))
+                .findById(expectedUserDTO.getId());
+    }
+
+    @Test
+    @DisplayName("Unit test - Put Username Or Email Already Exists -> 400")
+    void whenPUTUserIsCalledUpdateUsernameOrEmailAlreadyExistsThenDtoShouldBeReturnedBadRequest() {
+        UserDTO expectedUserDTO = dtoBuilder.buildUserDTO();
+        User user = mapper.toModel(expectedUserDTO);
+
+        Mockito.when(repository.findByUsernameOrEmailAndIdNot(expectedUserDTO.getId(), expectedUserDTO.getUsername(), expectedUserDTO.getEmail()))
+                .thenReturn(Optional.of(user));
+
+        Assertions.assertThrows(UserAlreadyExistsException.class, () ->service.update(expectedUserDTO.getId(), expectedUserDTO));
+
+        Mockito.verify(repository, Mockito.times(1))
+                .findByUsernameOrEmailAndIdNot(expectedUserDTO.getId(), expectedUserDTO.getUsername(), expectedUserDTO.getEmail());
     }
 }

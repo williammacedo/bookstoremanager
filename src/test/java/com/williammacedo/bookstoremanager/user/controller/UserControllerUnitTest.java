@@ -3,6 +3,7 @@ package com.williammacedo.bookstoremanager.user.controller;
 import com.williammacedo.bookstoremanager.exception.BookstoreExceptionHandler;
 import com.williammacedo.bookstoremanager.user.builder.UserDTOBuilder;
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
+import com.williammacedo.bookstoremanager.user.exception.UserAlreadyExistsException;
 import com.williammacedo.bookstoremanager.user.exception.UserNotFoundException;
 import com.williammacedo.bookstoremanager.user.service.UserService;
 import com.williammacedo.bookstoremanager.utils.JsonConversionUtils;
@@ -166,6 +167,95 @@ class UserControllerUnitTest {
                 .andExpect(jsonPath("$.message", is("Informed argument(s) validation error(s)")));
 
         Mockito.verify(service, Mockito.times(0)).create(expectedUser);
+    }
+
+    @Test
+    @DisplayName("Controller UT - Put to update user")
+    void whenPUTIsCalledThenShouldReturnUserUpdated() throws Exception {
+        UserDTO expectedUser = dtoBuilder.buildUserDTO();
+
+        Mockito.when(service.update(expectedUser.getId(), expectedUser)).thenReturn(expectedUser);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(JsonConversionUtils.asJsonString(expectedUser))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(expectedUser.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(expectedUser.getName())))
+                .andExpect(jsonPath("$.age", is(expectedUser.getAge())))
+                .andExpect(jsonPath("$.gender", is(expectedUser.getGender().name())))
+                .andExpect(jsonPath("$.email", is(expectedUser.getEmail())))
+                .andExpect(jsonPath("$.username", is(expectedUser.getUsername())))
+                .andExpect(jsonPath("$.password", is(expectedUser.getPassword())))
+                .andExpect(
+                        jsonPath("$.birthDate", is(formatter.format(expectedUser.getBirthDate())))
+                );
+
+        Mockito.verify(service, Mockito.times(1)).update(expectedUser.getId(), expectedUser);
+    }
+
+    @Test
+    @DisplayName("Controller UT - Put user with invalid ID")
+    void whenPUTIsCalledWithInvalidIDThenShouldReturnNotFound() throws Exception {
+        UserDTO expectedUser = dtoBuilder.buildUserDTO();
+        String exceptionExpected = String.format("User with id %s not exists!", expectedUser.getId());
+
+        Mockito.doThrow(new UserNotFoundException(expectedUser.getId()))
+                .when(service).update(expectedUser.getId(), expectedUser);
+
+        mockMvc.perform(
+                    MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(JsonConversionUtils.asJsonString(expectedUser))
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
+                .andExpect(jsonPath("$.errors[0]", is(exceptionExpected)))
+                .andExpect(jsonPath("$.message", is(exceptionExpected)));
+
+        Mockito.verify(service, Mockito.times(1)).update(expectedUser.getId(), expectedUser);
+    }
+
+    @Test
+    @DisplayName("Controller UT - Put user with email or username already exists")
+    void whenPUTIsCalledWithUsernameOrEmailAlreadyExistsInDatabaseThenShouldReturnBadRequest() throws Exception {
+        UserDTO expectedUser = dtoBuilder.buildUserDTO();
+        String exceptionExpected = String.format("User with email %s or username %s already exists!",
+                expectedUser.getEmail(), expectedUser.getUsername());
+
+        Mockito.doThrow(new UserAlreadyExistsException(expectedUser.getUsername(), expectedUser.getEmail()))
+                .when(service).update(expectedUser.getId(), expectedUser);
+
+        mockMvc.perform(
+                    MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(JsonConversionUtils.asJsonString(expectedUser))
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
+                .andExpect(jsonPath("$.errors[0]", is(exceptionExpected)))
+                .andExpect(jsonPath("$.message", is(exceptionExpected)));
+
+        Mockito.verify(service, Mockito.times(1)).update(expectedUser.getId(), expectedUser);
+    }
+
+    @Test
+    @DisplayName("Controller UT - Put user without required fields then Bad Request")
+    void whenPUTIsCalledWithoutRequiredFieldsThenShouldReturnBadRequest() throws Exception {
+        UserDTO expectedUser = dtoBuilder.buildUserDTO();
+        expectedUser.setName(null);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(JsonConversionUtils.asJsonString(expectedUser))
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
+                .andExpect(jsonPath("$.errors[0]", is("Field: NAME must not be blank")))
+                .andExpect(jsonPath("$.message", is("Informed argument(s) validation error(s)")));
     }
 
     @Test

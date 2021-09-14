@@ -32,6 +32,11 @@ public class UserController implements UserControllerDocs {
         return service.create(dto);
     }
 
+    @PutMapping("/{id}")
+    public UserDTO update(@PathVariable Long id, @RequestBody @Valid UserDTO dto) {
+        return service.update(id, dto);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

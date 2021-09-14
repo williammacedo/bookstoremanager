@@ -31,6 +31,14 @@ public interface UserControllerDocs {
     })
     UserDTO create(UserDTO dto);
 
+    @ApiOperation(value = "User update operation")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Success update user"),
+            @ApiResponse(code = 400, message = "Missing required fields, wrong field range value or user already registered on system."),
+            @ApiResponse(code = 404, message = "User not found."),
+    })
+    UserDTO update(Long id, UserDTO dto);
+
     @ApiOperation(value = "User exclusion operation.")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "No content, author deleted."),

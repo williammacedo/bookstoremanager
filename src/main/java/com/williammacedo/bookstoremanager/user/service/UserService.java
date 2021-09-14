@@ -37,6 +37,15 @@ public class UserService {
     }
 
     @Transactional
+    public UserDTO update(Long id, UserDTO dto) {
+        verifyIfExists(id, dto.getUsername(), dto.getEmail());
+        User entity = verifyAndGetUser(id);
+        User userToUpdate = mapper.updateUser(entity, dto);
+        User user = repository.save(userToUpdate);
+        return mapper.toDTO(user);
+    }
+
+    @Transactional
     public void delete(Long id) {
         User user = verifyAndGetUser(id);
         repository.delete(user);
@@ -48,6 +57,11 @@ public class UserService {
 
     private void verifyIfExists(String username, String email) {
         repository.findByUsernameOrEmail(username, email)
+                .ifPresent(user -> {throw new UserAlreadyExistsException(username, email);});
+    }
+
+    private void verifyIfExists(Long id, String username, String email) {
+        repository.findByUsernameOrEmailAndIdNot(id, username, email)
                 .ifPresent(user -> {throw new UserAlreadyExistsException(username, email);});
     }
 }
