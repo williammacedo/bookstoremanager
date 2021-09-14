@@ -2,7 +2,6 @@ package com.williammacedo.bookstoremanager.user.mapper;
 
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
 import com.williammacedo.bookstoremanager.user.entity.User;
-import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
