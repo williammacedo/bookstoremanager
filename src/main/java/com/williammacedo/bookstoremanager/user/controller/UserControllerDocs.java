@@ -1,7 +1,5 @@
 package com.williammacedo.bookstoremanager.user.controller;
 
-import com.williammacedo.bookstoremanager.user.dto.JwtRequest;
-import com.williammacedo.bookstoremanager.user.dto.JwtResponse;
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

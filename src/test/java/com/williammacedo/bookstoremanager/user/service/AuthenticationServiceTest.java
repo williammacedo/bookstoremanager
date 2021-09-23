@@ -41,7 +41,7 @@ class AuthenticationServiceTest {
 
     @Test
     @DisplayName("Valid loadByUsername")
-    public void whenValidUsernameThenReturnUserDetails() {
+    void whenValidUsernameThenReturnUserDetails() {
         final String username = "william";
         final String password = "123456";
         final Role role = Role.USER;
@@ -63,7 +63,7 @@ class AuthenticationServiceTest {
 
     @Test
     @DisplayName("Valid loadByUsername")
-    public void whenInvalidUsernameIsInformedThenExceptionShouldBeThrow() {
+    void whenInvalidUsernameIsInformedThenExceptionShouldBeThrow() {
         final String username = "william";
 
         when(repository.findByUsername(username))
