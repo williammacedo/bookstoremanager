@@ -2,6 +2,7 @@ package com.williammacedo.bookstoremanager.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.williammacedo.bookstoremanager.user.enums.Gender;
+import com.williammacedo.bookstoremanager.user.enums.Role;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,4 +35,6 @@ public class UserDTO {
     @ApiModelProperty(example = "01/01/1980")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
+    @NotNull
+    private Role role;
 }

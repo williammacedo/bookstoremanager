@@ -7,6 +7,7 @@ import com.williammacedo.bookstoremanager.user.exception.UserNotFoundException;
 import com.williammacedo.bookstoremanager.user.mapper.UserMapper;
 import com.williammacedo.bookstoremanager.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ public class UserService {
     private static final UserMapper mapper = UserMapper.INSTANCE;
 
     private UserRepository repository;
+    private PasswordEncoder passwordEncoder;
 
     public List<UserDTO> findAll() {
         return repository.findAllAsDTO();
@@ -32,7 +34,9 @@ public class UserService {
     @Transactional
     public UserDTO create(UserDTO dto) {
         verifyIfExists(dto.getUsername(), dto.getEmail());
-        User user = repository.save(mapper.toModel(dto));
+        User userToCreate = mapper.toModel(dto);
+        userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
+        User user = repository.save(userToCreate);
         return mapper.toDTO(user);
     }
 
@@ -41,6 +45,7 @@ public class UserService {
         verifyIfExists(id, dto.getUsername(), dto.getEmail());
         User entity = verifyAndGetUser(id);
         User userToUpdate = mapper.updateUser(entity, dto);
+        userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
         User user = repository.save(userToUpdate);
         return mapper.toDTO(user);
     }

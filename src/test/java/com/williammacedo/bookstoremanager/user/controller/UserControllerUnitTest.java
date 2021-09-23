@@ -1,12 +1,12 @@
 package com.williammacedo.bookstoremanager.user.controller;
 
 import com.williammacedo.bookstoremanager.exception.BookstoreExceptionHandler;
+import com.williammacedo.bookstoremanager.user.builder.JwtRequestBuilder;
 import com.williammacedo.bookstoremanager.user.builder.UserDTOBuilder;
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
 import com.williammacedo.bookstoremanager.user.exception.UserAlreadyExistsException;
 import com.williammacedo.bookstoremanager.user.exception.UserNotFoundException;
 import com.williammacedo.bookstoremanager.user.service.UserService;
-import com.williammacedo.bookstoremanager.utils.JsonConversionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,12 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
+import static com.williammacedo.bookstoremanager.utils.JsonConversionUtils.asJsonString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,10 +52,12 @@ class UserControllerUnitTest {
     MockMvc mockMvc;
 
     UserDTOBuilder dtoBuilder;
+    JwtRequestBuilder jwtRequestBuilder;
 
     @BeforeEach
     void setUp() {
         dtoBuilder = UserDTOBuilder.builder().build();
+        jwtRequestBuilder = JwtRequestBuilder.builder().build();
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setControllerAdvice(BookstoreExceptionHandler.class)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
@@ -65,7 +70,7 @@ class UserControllerUnitTest {
     void whenGETIsCalledThenShouldReturnAnListOfUsers() throws Exception {
         UserDTO expectedUser = dtoBuilder.buildUserDTO();
 
-        Mockito.when(service.findAll()).thenReturn(Collections.singletonList(expectedUser));
+        when(service.findAll()).thenReturn(Collections.singletonList(expectedUser));
 
         mockMvc.perform(MockMvcRequestBuilders.get(USERS_API_URL_PATH))
                 .andExpect(status().isOk())
@@ -89,7 +94,7 @@ class UserControllerUnitTest {
     void whenGETIsCalledWithIDThenShouldReturnAnUser() throws Exception {
         UserDTO expectedUser = dtoBuilder.buildUserDTO();
 
-        Mockito.when(service.findById(expectedUser.getId())).thenReturn(expectedUser);
+        when(service.findById(expectedUser.getId())).thenReturn(expectedUser);
 
         mockMvc.perform(MockMvcRequestBuilders.get(USERS_API_URL_PATH + "/" + expectedUser.getId()))
                 .andExpect(status().isOk())
@@ -112,7 +117,7 @@ class UserControllerUnitTest {
     void whenGETIsCalledWithInvalidIDThenShouldReturnNotFound() throws Exception {
         UserDTO expectedUser = dtoBuilder.buildUserDTO();
 
-        Mockito.when(service.findById(expectedUser.getId())).thenThrow(new UserNotFoundException(expectedUser.getId()));
+        when(service.findById(expectedUser.getId())).thenThrow(new UserNotFoundException(expectedUser.getId()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(USERS_API_URL_PATH + "/" + expectedUser.getId()))
                 .andExpect(status().isNotFound())
@@ -128,12 +133,12 @@ class UserControllerUnitTest {
     void whenPOSTIsCalledThenShouldReturnUserCreated() throws Exception {
         UserDTO expectedUser = dtoBuilder.buildUserDTO();
 
-        Mockito.when(service.create(expectedUser)).thenReturn(expectedUser);
+        when(service.create(expectedUser)).thenReturn(expectedUser);
 
         mockMvc.perform(
-                    MockMvcRequestBuilders.post(USERS_API_URL_PATH)
+                    post(USERS_API_URL_PATH)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(JsonConversionUtils.asJsonString(expectedUser))
+                    .content(asJsonString(expectedUser))
                 )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(expectedUser.getId().intValue())))
@@ -157,9 +162,9 @@ class UserControllerUnitTest {
         expectedUser.setName(null);
 
         mockMvc.perform(
-                    MockMvcRequestBuilders.post(USERS_API_URL_PATH)
+                    post(USERS_API_URL_PATH)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(JsonConversionUtils.asJsonString(expectedUser))
+                    .content(asJsonString(expectedUser))
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
@@ -174,12 +179,12 @@ class UserControllerUnitTest {
     void whenPUTIsCalledThenShouldReturnUserUpdated() throws Exception {
         UserDTO expectedUser = dtoBuilder.buildUserDTO();
 
-        Mockito.when(service.update(expectedUser.getId(), expectedUser)).thenReturn(expectedUser);
+        when(service.update(expectedUser.getId(), expectedUser)).thenReturn(expectedUser);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(JsonConversionUtils.asJsonString(expectedUser))
+                                .content(asJsonString(expectedUser))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(expectedUser.getId().intValue())))
@@ -208,7 +213,7 @@ class UserControllerUnitTest {
         mockMvc.perform(
                     MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(JsonConversionUtils.asJsonString(expectedUser))
+                    .content(asJsonString(expectedUser))
                 )
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
@@ -231,7 +236,7 @@ class UserControllerUnitTest {
         mockMvc.perform(
                     MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(JsonConversionUtils.asJsonString(expectedUser))
+                    .content(asJsonString(expectedUser))
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))
@@ -250,7 +255,7 @@ class UserControllerUnitTest {
         mockMvc.perform(
                         MockMvcRequestBuilders.put(USERS_API_URL_PATH + "/" + expectedUser.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(JsonConversionUtils.asJsonString(expectedUser))
+                                .content(asJsonString(expectedUser))
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors", hasSize(equalTo(1))))

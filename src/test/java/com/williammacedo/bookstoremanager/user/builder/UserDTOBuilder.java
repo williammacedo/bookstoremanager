@@ -2,6 +2,7 @@ package com.williammacedo.bookstoremanager.user.builder;
 
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
 import com.williammacedo.bookstoremanager.user.enums.Gender;
+import com.williammacedo.bookstoremanager.user.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -29,8 +30,10 @@ public class UserDTOBuilder {
     String password = "123456";
     @Builder.Default
     LocalDate birthDate = LocalDate.of(1990, 1, 1);
+    @Builder.Default
+    Role role = Role.USER;
 
     public UserDTO buildUserDTO() {
-        return new UserDTO(id,name,age,gender,email,username,password,birthDate);
+        return new UserDTO(id,name,age,gender,email,username,password,birthDate, role);
     }
 }

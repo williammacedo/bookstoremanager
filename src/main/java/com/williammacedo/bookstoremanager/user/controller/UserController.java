@@ -1,6 +1,7 @@
 package com.williammacedo.bookstoremanager.user.controller;
 
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
+import com.williammacedo.bookstoremanager.user.service.AuthenticationService;
 import com.williammacedo.bookstoremanager.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserController implements UserControllerDocs {
 
     private UserService service;
+    private AuthenticationService authenticationService;
 
     @GetMapping
     public List<UserDTO> findAll() {

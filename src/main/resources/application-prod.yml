@@ -19,3 +19,7 @@ spring:
   h2:
     console:
       enabled: true
+
+jwt:
+  secret: bookstoremanager
+  validity: 18000

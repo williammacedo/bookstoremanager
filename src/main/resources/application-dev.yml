@@ -27,3 +27,7 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
+
+jwt:
+  secret: bookstoremanager
+  validity: 18000

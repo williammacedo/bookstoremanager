@@ -3,6 +3,7 @@ package com.williammacedo.bookstoremanager.user.entity;
 import com.williammacedo.bookstoremanager.book.entity.Book;
 import com.williammacedo.bookstoremanager.entity.Auditable;
 import com.williammacedo.bookstoremanager.user.enums.Gender;
+import com.williammacedo.bookstoremanager.user.enums.Role;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -41,4 +42,8 @@ public class User extends Auditable {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Book> books;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role;
 }
