@@ -1,8 +1,6 @@
 package com.williammacedo.bookstoremanager.user.service;
 
 import com.williammacedo.bookstoremanager.user.builder.JwtRequestBuilder;
-import com.williammacedo.bookstoremanager.user.dto.JwtRequest;
-import com.williammacedo.bookstoremanager.user.dto.JwtResponse;
 import com.williammacedo.bookstoremanager.user.dto.UserDetailsDTO;
 import com.williammacedo.bookstoremanager.user.enums.Role;
 import com.williammacedo.bookstoremanager.user.repository.UserRepository;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

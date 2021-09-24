@@ -1,11 +1,9 @@
 package com.williammacedo.bookstoremanager.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.williammacedo.bookstoremanager.author.dto.AuthorDTO;
 
 public class JsonConversionUtils {
     public static String asJsonString(Object dto) {

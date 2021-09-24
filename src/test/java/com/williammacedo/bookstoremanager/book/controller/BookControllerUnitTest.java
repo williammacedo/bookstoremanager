@@ -5,8 +5,6 @@ import com.williammacedo.bookstoremanager.book.builder.BookResponseDTOBuilder;
 import com.williammacedo.bookstoremanager.book.dto.BookResponseDTO;
 import com.williammacedo.bookstoremanager.book.service.BookService;
 import com.williammacedo.bookstoremanager.exception.BookstoreExceptionHandler;
-import com.williammacedo.bookstoremanager.user.dto.UserDTO;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
