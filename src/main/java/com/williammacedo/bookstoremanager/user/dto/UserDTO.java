@@ -5,6 +5,7 @@ import com.williammacedo.bookstoremanager.user.enums.Gender;
 import com.williammacedo.bookstoremanager.user.enums.Role;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
