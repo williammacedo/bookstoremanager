@@ -9,7 +9,7 @@ import com.williammacedo.bookstoremanager.book.entity.Book;
 import com.williammacedo.bookstoremanager.book.mapper.BookMapper;
 import com.williammacedo.bookstoremanager.book.repository.BookRepository;
 import com.williammacedo.bookstoremanager.publisher.service.PublisherService;
-import com.williammacedo.bookstoremanager.user.service.UserService;
+import com.williammacedo.bookstoremanager.user.dto.AuthenticatedUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -30,8 +30,6 @@ class BookServiceTest {
     private final BookMapper mapper = BookMapper.INSTANCE;
 
     @Mock
-    UserService userService;
-    @Mock
     AuthorService authorService;
     @Mock
     PublisherService publisherService;
@@ -43,11 +41,13 @@ class BookServiceTest {
 
     private static BookRequestDTOBuilder bookRequestDTOBuilder;
     private static BookResponseDTOBuilder bookResponseDTOBuilder;
+    private static AuthenticatedUser authenticatedUser;
 
     @BeforeAll
     static void setUp() {
         bookRequestDTOBuilder = BookRequestDTOBuilder.builder().build();
         bookResponseDTOBuilder = BookResponseDTOBuilder.builder().build();
+        authenticatedUser = new AuthenticatedUser("william", "123456", "ADMIN");
     }
 
     @Test
@@ -58,13 +58,13 @@ class BookServiceTest {
         Book book = mapper.toModel(expectedBookRequestDTO);
         book.setId(1L);
 
-        when(repository.findAll()).thenReturn(Collections.singletonList(book));
+        when(repository.getBooksAuthorsAndPublishers()).thenReturn(Collections.singletonList(book));
 
         List<BookResponseDTO> bookResponseDTOS = service.findAll();
 
         Assertions.assertFalse(bookResponseDTOS.isEmpty());
         Assertions.assertEquals(expectedBookResponseDTO, bookResponseDTOS.get(0));
 
-        verify(repository, times(1)).findAll();
+        verify(repository, times(1)).getBooksAuthorsAndPublishers();
     }
 }

@@ -7,6 +7,7 @@ import com.williammacedo.bookstoremanager.user.entity.User;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -27,12 +28,12 @@ public class Book extends Auditable {
     @Column(columnDefinition = "integer default 0")
     private int chapters;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     private Author author;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     private Publisher publisher;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    private User user;
+    @ManyToMany(mappedBy = "books")
+    private List<User> users;
 }

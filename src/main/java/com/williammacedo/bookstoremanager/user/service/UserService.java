@@ -1,5 +1,7 @@
 package com.williammacedo.bookstoremanager.user.service;
 
+import com.williammacedo.bookstoremanager.book.entity.Book;
+import com.williammacedo.bookstoremanager.user.dto.AuthenticatedUser;
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
 import com.williammacedo.bookstoremanager.user.entity.User;
 import com.williammacedo.bookstoremanager.user.exception.UserAlreadyExistsException;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -54,6 +57,23 @@ public class UserService {
     public void delete(Long id) {
         User user = verifyAndGetUser(id);
         repository.delete(user);
+    }
+
+    @Transactional
+    public void addBooks(AuthenticatedUser authenticatedUser, List<Long> ids) {
+        User user = verifyAndGetUserIfExists(authenticatedUser.getUsername());
+        user.setBooks(
+            ids.stream().map(id -> {
+                Book book = new Book();
+                book.setId(id);
+                return book;
+            }).collect(Collectors.toList())
+        );
+        repository.save(user);
+    }
+
+    public User verifyAndGetUserIfExists(String username) {
+        return repository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
 
     private User verifyAndGetUser(Long id) {

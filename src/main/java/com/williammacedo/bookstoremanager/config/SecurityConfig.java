@@ -30,7 +30,9 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String AUTH_API_URL = "/v1/auth";
-    private static final String USERS_API_URL = "/v1/users/**";
+    private static final String OPEN_USERS_API_URL = "/v1/users";
+    private static final String AUTHENTICATED_USERS_API_URL = "/v1/users/**";
+    private static final String USERS_BOOKS_API_URL = "/v1/users/books";
     private static final String PUBLISHERS_API_URL = "/v1/publishers/**";
     private static final String AUTHORS_API_URL = "/v1/authors/**";
     private static final String BOOKS_API_URL = "/v1/books/**";
@@ -85,7 +87,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(HttpMethod.HEAD).permitAll()
                 .antMatchers(AUTH_API_URL).permitAll()
-                .antMatchers(USERS_API_URL, H2_CONSOLE_URL, SWAGGER_URL).permitAll()
+                .antMatchers(HttpMethod.GET, OPEN_USERS_API_URL).permitAll()
+                .antMatchers(HttpMethod.POST, OPEN_USERS_API_URL).permitAll()
+                .antMatchers(USERS_BOOKS_API_URL).authenticated()
+                .antMatchers(AUTHENTICATED_USERS_API_URL).hasRole(ROLE_ADMIN)
+                .antMatchers(H2_CONSOLE_URL, SWAGGER_URL).permitAll()
                 .antMatchers(PUBLISHERS_API_URL, AUTHORS_API_URL).hasRole(ROLE_ADMIN)
                 .antMatchers(BOOKS_API_URL).hasAnyRole(ROLE_ADMIN, ROLE_USER)
                 .anyRequest().authenticated()

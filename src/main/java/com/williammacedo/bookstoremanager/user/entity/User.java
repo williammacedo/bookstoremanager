@@ -40,7 +40,12 @@ public class User extends Auditable {
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "books_user",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id")
+    )
     private List<Book> books;
 
     @Enumerated(EnumType.STRING)

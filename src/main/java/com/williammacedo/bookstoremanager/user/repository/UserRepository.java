@@ -44,5 +44,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         "from User user " +
         "where user.username = :username"
     )
-    Optional<UserDetailsDTO> findByUsername(String username);
+    Optional<UserDetailsDTO> findUserDetailsDTO(String username);
+
+    Optional<User> findByUsername(String username);
 }

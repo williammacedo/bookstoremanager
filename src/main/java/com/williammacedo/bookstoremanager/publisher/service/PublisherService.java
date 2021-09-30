@@ -51,7 +51,7 @@ public class PublisherService {
             });
     }
 
-    private Publisher verifyAndGet(Long id) {
+    public Publisher verifyAndGet(Long id) {
         return repository.findById(id).orElseThrow(() -> new PublisherNotFoundException(id));
     }
 }

@@ -46,7 +46,7 @@ public class AuthorService {
         repository.delete(author);
     }
 
-    private Author verifyAndGetAuthor(Long id) {
+    public Author verifyAndGetAuthor(Long id) {
         return repository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
     }
 

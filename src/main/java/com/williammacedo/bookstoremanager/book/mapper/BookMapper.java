@@ -28,5 +28,9 @@ public interface BookMapper {
     })
     Book toModel(BookRequestDTO dto);
 
-    Book updateUser(@MappingTarget Book entity, BookRequestDTO dto);
+    @Mappings({
+            @Mapping(source = "authorId", target = "author", ignore = true),
+            @Mapping(source = "publisherId", target = "publisher", ignore = true)
+    })
+    Book updateBook(@MappingTarget Book entity, BookRequestDTO dto);
 }

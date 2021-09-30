@@ -11,13 +11,13 @@ import lombok.Value;
 public class BookRequestDTOBuilder {
 
     @Builder.Default
-    String name = "It a coisa";
+    String name = "It, a coisa";
     @Builder.Default
     String isbn = "9788401354038";
     @Builder.Default
-    Long pages = 1138L;
+    Integer pages = 1138;
     @Builder.Default
-    Long chapters = 64L;
+    Integer chapters = 64;
     @Builder.Default
     Long authorId = 1L;
     @Builder.Default

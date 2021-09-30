@@ -14,8 +14,8 @@ public class BookResponseDTO {
     private Long id;
     private String name;
     private String isbn;
-    private Long pages;
-    private Long chapters;
+    private Integer pages;
+    private Integer chapters;
     private AuthorDTO author;
     private PublisherDTO publisher;
 }

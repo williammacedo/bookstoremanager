@@ -17,7 +17,7 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetailsDTO user = repository.findByUsername(username).orElseThrow(
+        UserDetailsDTO user = repository.findUserDetailsDTO(username).orElseThrow(
             () -> new UsernameNotFoundException(String.format("User not found with username %s", username))
         );
         return new AuthenticatedUser(user.getUsername(), user.getPassword(), user.getRole().name());

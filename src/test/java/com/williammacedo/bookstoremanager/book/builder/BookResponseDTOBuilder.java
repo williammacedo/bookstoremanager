@@ -15,13 +15,13 @@ public class BookResponseDTOBuilder {
     @Builder.Default
     Long id = 1L;
     @Builder.Default
-    String name = "It a coisa";
+    String name = "It, a coisa";
     @Builder.Default
     String isbn = "9788401354038";
     @Builder.Default
-    Long pages = 1138L;
+    Integer pages = 1138;
     @Builder.Default
-    Long chapters = 64L;
+    Integer chapters = 64;
     @Builder.Default
     AuthorDTO author = AuthorDTO.builder().id(1L).build();
     @Builder.Default

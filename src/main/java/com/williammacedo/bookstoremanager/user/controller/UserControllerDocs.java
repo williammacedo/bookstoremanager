@@ -1,5 +1,7 @@
 package com.williammacedo.bookstoremanager.user.controller;
 
+import com.williammacedo.bookstoremanager.book.dto.BookResponseDTO;
+import com.williammacedo.bookstoremanager.user.dto.AuthenticatedUser;
 import com.williammacedo.bookstoremanager.user.dto.UserDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,5 +47,11 @@ public interface UserControllerDocs {
             @ApiResponse(code = 404, message = "User not found.")
     })
     void delete(Long id);
+
+    @ApiOperation(value = "List all books registered for logged user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success return all books for logged user"),
+    })
+    List<BookResponseDTO> getBooks(AuthenticatedUser authenticatedUser);
 
 }

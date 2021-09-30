@@ -44,7 +44,7 @@ class AuthenticationServiceTest {
         final Role role = Role.USER;
         final SimpleGrantedAuthority expectRole = new SimpleGrantedAuthority("ROLE_" + role.name());
 
-        when(repository.findByUsername(username))
+        when(repository.findUserDetailsDTO(username))
             .thenReturn(Optional.of(new UserDetailsDTO(username, password, role)));
 
         UserDetails userDetails = service.loadUserByUsername(username);
@@ -55,7 +55,7 @@ class AuthenticationServiceTest {
         Assertions.assertFalse(userDetails.getAuthorities().isEmpty());
         Assertions.assertTrue(userDetails.getAuthorities().contains(expectRole));
 
-        verify(repository, times(1)).findByUsername(username);
+        verify(repository, times(1)).findUserDetailsDTO(username);
     }
 
     @Test
@@ -63,11 +63,11 @@ class AuthenticationServiceTest {
     void whenInvalidUsernameIsInformedThenExceptionShouldBeThrow() {
         final String username = "william";
 
-        when(repository.findByUsername(username))
+        when(repository.findUserDetailsDTO(username))
                 .thenReturn(Optional.empty());
 
         Assertions.assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername(username));
 
-        verify(repository, times(1)).findByUsername(username);
+        verify(repository, times(1)).findUserDetailsDTO(username);
     }
 }
